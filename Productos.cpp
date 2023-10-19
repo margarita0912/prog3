@@ -54,7 +54,7 @@ public:
     }
 
     void leerArchivo() {
-        ifstream archivo("inventario1.txt");
+        ifstream archivo("inventarioo.txt");
         string linea;
 
         getline(archivo, linea);
@@ -63,15 +63,15 @@ public:
             Producto producto;
             stringstream ss(linea);
 
-            getline(ss, producto.grupo, ';');
-            getline(ss, producto.codigo, ';');
-            getline(ss, producto.nombre, ';');
+            getline(ss, producto.grupo, ',');
+            getline(ss, producto.codigo, ',');
+            getline(ss, producto.nombre, ',');
 
             string depositoInfo;
-            while (getline(ss, depositoInfo, ';')) {
+            while (getline(ss, depositoInfo, ',')) {
                 stringstream depositoStream(depositoInfo);
                 depositos deposito;
-                getline(depositoStream, deposito.nombre, ';');
+                getline(depositoStream, deposito.nombre, ',');
                 depositoStream >> deposito.cantidad;
                 producto.deposito.push_back(deposito);
                 producto.stockTotal += deposito.cantidad;

@@ -1,3 +1,3 @@
-C:/Users/marga/CLionProjects/prog3/cmake-build-debug/CMakeFiles/prog3.dir
-C:/Users/marga/CLionProjects/prog3/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/marga/CLionProjects/prog3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/marga/PROGRAMACION III/prog3/cmake-build-debug/CMakeFiles/prog3.dir
+C:/Users/marga/PROGRAMACION III/prog3/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/marga/PROGRAMACION III/prog3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
