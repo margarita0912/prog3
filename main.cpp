@@ -1,8 +1,6 @@
 #include <iostream>
-#include "Productos.cpp"
 #include "DatosProductos.h"
 #include "ArbolBinario.h"
-#include "Pila.h"
 #include <fstream>
 #include <iomanip>
 #include <stdexcept>
@@ -11,16 +9,18 @@
 #include <limits>
 using namespace std;
 
-
 DatosProductos base_de_datos[400];
+ArbolBinario<int> arbol;
+
 int ubicProducto=0;
+int stockGeneral=0;
 
 void leerArchivo() {
     ifstream archivoProductos("inventarioo.txt");
     string linea, dato;
     stringstream s;
 
-    getline(archivoProductos, linea);
+    getline(archivoProductos, linea); //en lugar de ingorar el encabezado, contar las lineas que tiene
 
     while (getline(archivoProductos, linea, '\n')) {
 
@@ -58,9 +58,12 @@ void leerArchivo() {
                 }
 
                 case 3: {
+                    if (dato.front() == '"' && dato.back() == '"') {
+                        dato = dato.substr(1, dato.length() - 2);
+                    }
                     int total = 0;
                     // Leer los valores de depósitos y almacenarlos en el arreglo temporal
-                    for (int i = 0; i < 20; i++) {
+                    for(int i=0; i<20; i++){
 
                         if(dato.empty()){
                             depositos[i]=0;
@@ -70,9 +73,12 @@ void leerArchivo() {
                             total = total + depositos[i];
                         }
                         getline(s, dato, ',');
+
                     }
+
                     base_de_datos[ubicProducto].setdepositos(depositos);
                     base_de_datos[ubicProducto].setstockTotal(total);
+                    stockGeneral=stockGeneral+total;
                     break;
                 }
             }
@@ -81,26 +87,21 @@ void leerArchivo() {
         s.clear();
         ubicProducto++;      //en este while me voy elevando a uno en la ubic del cliente
     }
+    archivoProductos.close();
 }
 
-/*void creararbol(){
-    ArbolBinario<int> arbol;
-    Pila<int> pila;
-
-    for(int i=0; i<10; i++){
-        try {
-           arbol.put(base_de_datos[200].getstockTotal());
-        } catch (int error) {
-            if (error == 200) {
-                for(int i=0; i<100; i++){
-
-                }
-            } else {
-                cout << "error desconocido";
-            }
-        }
+void crearArbol(){
+    for(int i=0; i<ubicProducto; i++){
+        arbol.put(base_de_datos[i].getstockTotal());
     }
-}*/
+    arbol.print();
+}
+
+void minStock(int n){
+
+}
+
+
 
 
 int main() {
@@ -110,10 +111,13 @@ int main() {
 
     leerArchivo();
 
+    crearArbol();
 
-    base_de_datos[5].probador();
 
-    /* while(opc!="salir") {
+
+
+
+    while(opc!="salir") {
          cout << "INGRESE POR TECLADO LO QUE QUIERE REALIZAR" << endl;
          cout << "'total_art_dif' Cantidad total de articulos diferentes." << endl
               << "'total_art' Cantidad total de articulos" << endl
@@ -157,12 +161,12 @@ int main() {
          switch (opcswitch) {
              case 1:
                  cout<<"El total de articulos diferentes es: ";
-                 //cout<<archivoProductos.total_art_dif();
+                 cout<<ubicProducto<<endl;
                  cout<<endl<<""<<endl;
                  break;
              case 2:
                  cout<< "La cantidad total de articulos es: ";
-                 //base_de_datos[1].getstockTotal;
+                 cout<<stockGeneral<<endl;
                  cout<<endl<<""<<endl;
                  break;
              case 3:
@@ -203,5 +207,5 @@ int main() {
                  cout<<endl<<""<<endl;
                  break;
          }
-     }*/
+     }
 }

@@ -8,8 +8,10 @@ class NodoArbol {
 private:
     T data;
     NodoArbol *left, *right;
-
+protected:
+    int altura;
 public:
+
     NodoArbol() {
         left = nullptr;
         right = nullptr;
@@ -44,6 +46,17 @@ public:
     void setLeft(NodoArbol *l) {
         this->left = l;
     }
+
+    int getAltura() const {
+        return altura;
+    }
+
+    void setAltura(int altura) {
+        this->altura = altura;
+    }
+
+
+
 
     void print(bool esDerecho, string identacion) {
         if (right != NULL) {

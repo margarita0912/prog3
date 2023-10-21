@@ -3,16 +3,16 @@
 #include <iostream>
 #include "NodoArbol.h"
 
+using namespace std;
+
 template <class T> class ArbolBinario {
 protected:
     NodoArbol<T> *root;
 private:
     T search(T data, NodoArbol<T> *r);
+    void buscarMenores(T data, NodoArbol<T> *r );
     NodoArbol<T> *put(T data, NodoArbol<T> *r);
     NodoArbol<T> *remove(T data, NodoArbol<T> *r);
-    NodoArbol<T> *findMaxAndRemove(NodoArbol<T> *r, bool *found);
-    NodoArbol<T> *putEspecular(T dato, NodoArbol<T> *r);
-    int contarporNivel(int n, int nActual, NodoArbol<T> *r);
     void preorder (NodoArbol<T> *r);
     void inorder (NodoArbol<T> *r);
     void postorder (NodoArbol<T> *r);
@@ -24,6 +24,7 @@ public:
     void put(T dato);
 
     T search(T dato);
+    void buscarMenores(T dato);
 
     void remove(T dato);
 
@@ -39,9 +40,7 @@ public:
 
     void print();
 
-    void putEspecular(T dato);
 
-    int contarporNivel(int n);
 };
 
 /**
@@ -74,10 +73,6 @@ template <class T> T ArbolBinario<T>::search(T data, NodoArbol<T> *r) { //buscam
         throw 404;
     }
 
-    if(r->getData()==data){ //no puede haber datos iguales
-        encontrado(true, data);
-        return r->getData();
-    }
 
     if(r->getData() > data){ //si la raiz es mayor al dato que busco, buscamos por la izq
         return search(data, r->getLeft());
@@ -86,6 +81,28 @@ template <class T> T ArbolBinario<T>::search(T data, NodoArbol<T> *r) { //buscam
     }
 
 }
+
+template <class T> void ArbolBinario<T>::buscarMenores(T dato) {
+    return buscarMenores(dato, root);
+}
+
+template <class T> void ArbolBinario<T>::buscarMenores(T data, NodoArbol<T> *r) { //buscamos un arbol, pero no sabemos bien que tiene, solo que tiene hijos a la derecha e izquierda
+    if(r==nullptr){ //condicion base
+        encontrado(false, data);
+        throw 404;
+    }
+
+    if(r->getData() > data){ //si la raiz es mayor al dato que busco, buscamos por la izq
+        return buscarMenores(data, r->getLeft());
+    } else { //si la raiz es menor al dato que busco, buscamos por la der
+        return buscarMenores(data, r->getRight());
+    }
+
+}
+
+
+
+
 /**
  * Agrega un dato al árbol
  * @param clave Clave para agregar el dato
@@ -100,11 +117,7 @@ template <class T> NodoArbol<T> *ArbolBinario<T>::put(T data, NodoArbol<T> *r) {
         return new NodoArbol<T>(data); //creamos nuevo nodo porque esta vacio y retornamos el dato
     }
 
-    if(r->getData()==data){
-        throw 200;
-    }
-
-    if(r->getData() > data){
+    if(r->getData() >= data){
         r->setLeft(put(data, r->getLeft()));
     } else {
         r->setRight(put(data, r->getRight()));
@@ -167,21 +180,7 @@ template <class T> NodoArbol<T> *ArbolBinario<T>::remove(T data, NodoArbol<T> *r
     }
 }
 
-template<class T> NodoArbol<T> *findMaxAndRemove(NodoArbol<T> *r, bool *found){
-    NodoArbol<T> ret;
-    *found = false;
 
-    if(r->getRight() == nullptr){
-        *found = true;
-        return r;
-    }
-
-    ret = findMaxAndRemove(r->getRight(), found);
-    if(*found){
-        r->setRight(nullptr);
-        *found = false;
-    }
-}
 
 /**
  * Informa si un árbol esta vacío
@@ -240,9 +239,7 @@ template <class T> void ArbolBinario<T>::postorder(NodoArbol<T> *r) {
     inorder (r->getLeft());
     inorder (r->getRight());
     cout<<r->getData()<<endl;
-
 }
-
 
 /**
  * Muestra un árbol por consola
@@ -257,57 +254,6 @@ void ArbolBinario<T>::print(NodoArbol<T> *node, string indent) {
     if (root != NULL)
         root->print(false, "");
 }
-/**
- * Intercambia las ramas del arbol
-
- */
-template <class T> void ArbolBinario<T>::putEspecular(T dato) {
-    root=putEspecular(dato,root);
-}
-
-template <class T> NodoArbol<T> *ArbolBinario<T>::putEspecular(T dato, NodoArbol<T> *r) {
-    if(r== nullptr){
-        return new NodoArbol<T> (dato);
-    }
-
-    if(r->getData()==dato){
-        throw 200;
-    }
-
-    if(r->getData()>dato){
-        r->setRight(putEspecular(dato,r->getRight()));
-    }else{
-        r->setLeft(putEspecular(dato, r->getLeft()));
-    }
-
-    return r;
-
-}
-
-template <class T> int ArbolBinario<T>::contarporNivel(int n) {
-    return contarporNivel(n, 0, this->root);
-
-}
-
-template <class T> int ArbolBinario<T>::contarporNivel(int n, int nActual, NodoArbol<T> *r) {
-    if(n==nActual){
-        if(r!=nullptr){
-            return 1;
-        } else {
-            return 0;
-        }
-    } else {
-        if(nActual > n){
-            return 0;
-        } else if(r==nullptr){
-            return 0;
-        }
-    }
-
-    return contarporNivel(n, nActual+1, r->getLeft()) + contarporNivel(n, nActual+1, r->getRight());
-}
-
-
 
 
 

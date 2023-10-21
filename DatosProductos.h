@@ -35,6 +35,10 @@ public:
 
 
     void probador();
+
+    bool operator<(const DatosProductos& otro) const {
+        return stockTotal < otro.stockTotal;
+    }
 };
 
 
