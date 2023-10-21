@@ -14,13 +14,24 @@ ArbolBinario<int> arbol;
 
 int ubicProducto=0;
 int stockGeneral=0;
+int cantdepositos=0;
 
 void leerArchivo() {
     ifstream archivoProductos("inventarioo.txt");
-    string linea, dato;
+    string linea, dato, primeraLinea;
     stringstream s;
 
-    getline(archivoProductos, linea); //en lugar de ingorar el encabezado, contar las lineas que tiene
+
+    getline(archivoProductos, primeraLinea);
+
+    int numColumnas = 0;
+    s.str(primeraLinea);
+    while (getline(s, dato, ',')) {
+        numColumnas++;
+    }
+    s.clear();  // Limpiar el stringstream
+    cantdepositos=numColumnas-3;
+
 
     while (getline(archivoProductos, linea, '\n')) {
 
@@ -63,7 +74,7 @@ void leerArchivo() {
                     }
                     int total = 0;
                     // Leer los valores de depósitos y almacenarlos en el arreglo temporal
-                    for(int i=0; i<20; i++){
+                    for(int i=0; i<cantdepositos; i++){
 
                         if(dato.empty()){
                             depositos[i]=0;
@@ -88,6 +99,7 @@ void leerArchivo() {
         ubicProducto++;      //en este while me voy elevando a uno en la ubic del cliente
     }
     archivoProductos.close();
+
 }
 
 void crearArbol(){
@@ -112,7 +124,6 @@ int main() {
     leerArchivo();
 
     crearArbol();
-
 
 
 
