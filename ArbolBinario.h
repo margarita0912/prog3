@@ -1,6 +1,7 @@
 #ifndef U05_ARBOL_ARBOL_ARBOLBINARIO_H_
 #define U05_ARBOL_ARBOL_ARBOLBINARIO_H_
 #include <iostream>
+
 #include "NodoArbol.h"
 
 using namespace std;
@@ -10,7 +11,6 @@ protected:
     NodoArbol<T> *root;
 private:
     T search(T data, NodoArbol<T> *r);
-    void buscarMenores(T data, NodoArbol<T> *r );
     NodoArbol<T> *put(T data, NodoArbol<T> *r);
     NodoArbol<T> *remove(T data, NodoArbol<T> *r);
     void preorder (NodoArbol<T> *r);
@@ -24,7 +24,6 @@ public:
     void put(T dato);
 
     T search(T dato);
-    void buscarMenores(T dato);
 
     void remove(T dato);
 
@@ -39,8 +38,6 @@ public:
     bool esVacio();
 
     void print();
-
-
 };
 
 /**
@@ -81,26 +78,6 @@ template <class T> T ArbolBinario<T>::search(T data, NodoArbol<T> *r) { //buscam
     }
 
 }
-
-template <class T> void ArbolBinario<T>::buscarMenores(T dato) {
-    return buscarMenores(dato, root);
-}
-
-template <class T> void ArbolBinario<T>::buscarMenores(T data, NodoArbol<T> *r) { //buscamos un arbol, pero no sabemos bien que tiene, solo que tiene hijos a la derecha e izquierda
-    if(r==nullptr){ //condicion base
-        encontrado(false, data);
-        throw 404;
-    }
-
-    if(r->getData() > data){ //si la raiz es mayor al dato que busco, buscamos por la izq
-        return buscarMenores(data, r->getLeft());
-    } else { //si la raiz es menor al dato que busco, buscamos por la der
-        return buscarMenores(data, r->getRight());
-    }
-
-}
-
-
 
 
 /**
