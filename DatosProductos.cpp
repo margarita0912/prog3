@@ -81,5 +81,3 @@ void DatosProductos::probador() {
     cout << "DEPOSITO 1: " << depositos[0] << endl;
 
 }
-
-
