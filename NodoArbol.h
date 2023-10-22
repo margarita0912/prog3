@@ -55,9 +55,6 @@ public:
         this->altura = altura;
     }
 
-
-
-
     void print(bool esDerecho, string identacion) {
         if (right != NULL) {
             right->print(true, identacion + (esDerecho ? "     " : "|    "));
