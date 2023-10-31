@@ -17,6 +17,7 @@ private:
     void inorder (NodoArbol<T> *r);
     void postorder (NodoArbol<T> *r);
     void print(NodoArbol<T> *node, string indent);
+    void buscarProductosStockMenor(NodoArbol<T> *r, int n);
 
 public:
     ArbolBinario();
@@ -38,6 +39,12 @@ public:
     bool esVacio();
 
     void print();
+
+    void encontrado(bool, int);
+
+    void buscarProductosStockMenor(int);
+
+
 };
 
 /**
@@ -77,6 +84,15 @@ template <class T> T ArbolBinario<T>::search(T data, NodoArbol<T> *r) { //buscam
         return search(data, r->getRight());
     }
 
+}
+
+template<class T>
+void ArbolBinario<T>::encontrado(bool found, int numero) {
+    if (found) {
+        cout << "El valor " << numero << " se encontro." << endl;
+    } else {
+        cout << "El valor NO se encontro." << endl;
+    }
 }
 
 
@@ -230,6 +246,23 @@ template <class T>
 void ArbolBinario<T>::print(NodoArbol<T> *node, string indent) {
     if (root != NULL)
         root->print(false, "");
+}
+
+template <class T> void ArbolBinario<T>::buscarProductosStockMenor(int n) {
+    buscarProductosStockMenor(root, n);
+}
+
+template <class T> void ArbolBinario<T>::buscarProductosStockMenor(NodoArbol<T> *r, int n) {
+    if (r == nullptr) {
+        return;
+    }
+
+    if (r->getData()->getstockTotal() < n) {
+        cout << "Producto con stock menor que " << n << ": " << r->getData()->getcodigo() << endl;
+    }
+
+    buscarProductosStockMenor(r->getLeft(), n);
+    buscarProductosStockMenor(r->getRight(), n);
 }
 
 
