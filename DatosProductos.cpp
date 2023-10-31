@@ -80,4 +80,5 @@ void DatosProductos::probador() {
     cout << "Stock total: " << stockTotal << endl;
     cout << "DEPOSITO 1: " << depositos[0] << endl;
 
+
 }
