@@ -39,6 +39,29 @@ public:
     bool operator<(const DatosProductos& otro) const {
         return stockTotal < otro.stockTotal;
     }
+
+    bool operator>(const DatosProductos& otro) const {
+        return stockTotal > otro.stockTotal;
+    }
+
+    bool operator==(const DatosProductos& otro) const {
+        return stockTotal == otro.stockTotal;
+    }
+
+    bool operator<=(const DatosProductos& otro) const {
+        return stockTotal <= otro.stockTotal;
+    }
+    bool operator>=(const DatosProductos& otro) const {
+        return stockTotal >= otro.stockTotal;
+    }
+
+    friend ostream& operator << (ostream& os, DatosProductos &objeto){
+        os << objeto.stockTotal << endl;
+        return os;
+    }
+
+   
+
 };
 
 
