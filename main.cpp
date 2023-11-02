@@ -40,7 +40,7 @@ void quickSort(DatosProductos *base_de_datos[400], int inicio, int fin){ //pasar
 
 
 void leerArchivo(DatosProductos* base_de_datos[400], int &ubicProducto, int &stockGeneral, int &cantdepositos) {
-    ifstream archivoProductos("inventarioo.txt");
+    ifstream archivoProductos("Inventariado Fisico.csv");
     string linea, dato, primeraLinea;
     stringstream s;
 
@@ -110,6 +110,7 @@ void leerArchivo(DatosProductos* base_de_datos[400], int &ubicProducto, int &sto
                             depositos[i]=0;
                             total += depositos[i];
                         } else {
+
                             depositos[i] = stoi(dato); // Convierte el valor a entero
                             total = total + depositos[i];
                         }
@@ -139,7 +140,7 @@ void crearArbol(DatosProductos* base_de_datos[400], ArbolBinario<DatosProductos*
     for(int i=1; i<ubicProducto+1; i++){
         arbol.put(base_de_datos[i]);
     }
-   arbol.print();
+  // arbol.print();
 }
 
 void arbolPorDeposito(DatosProductos* base_de_datos[400], int ubicProducto, Lista<ArbolBinario<DatosProductos*>>& porDeposito, int cantDepositos) {
@@ -153,7 +154,7 @@ void arbolPorDeposito(DatosProductos* base_de_datos[400], int ubicProducto, List
 }
 
 void minStock(ArbolBinario<DatosProductos*> &arbol, DatosProductos* base_de_datos[400], int n, int ubicProducto=0){
-    //bool band=false;
+    bool band=false;
     /*cout << "ingrese la cantidad de stock a analizar menor o igual: ";
     cin >> n;*/
 
@@ -161,17 +162,27 @@ void minStock(ArbolBinario<DatosProductos*> &arbol, DatosProductos* base_de_dato
         if (base_de_datos[i]->getstockTotal() <= n) {
             base_de_datos[i]->probador();
             cout<<"-----------------------------------------------------"<<endl;
+            band = true;
         }
+    }
+    if(!band){
+        cout << "El stock ingresado no es valido." << endl;
     }
 }
 
 void maxStock(DatosProductos* base_de_datos[400], ArbolBinario<DatosProductos*> &arbol, int n, int ubicProducto=0){
+    bool band = false;
     for(int i=0; i<ubicProducto+1; i++) {
-        //DatosProductos* productoEnArbol = arbol.search(base_de_datos[i]);
         if (base_de_datos[i]->getstockTotal() >= n) {
             base_de_datos[i]->probador();
             cout<<"-----------------------------------------------------"<<endl;
+            band = true;
+
         }
+    }
+
+    if(!band){
+        cout << "El stock ingresado no es valido." << endl;
     }
 }
 
@@ -278,17 +289,7 @@ void exploreHeaders (string fileName){
     }
 }*/
 
-int main() { //(int argc, char **argv)
-
-    /*cout<< "cantidad de argumentos: "<<argc<<endl;
-    for (int i=0; i<argc; i++){
-        cout<< "ARGUMENTO "<< i << ": "<<argv[i]<<endl;
-        if (strcmp(argv[i], "file")==0){
-        cout << "NOMBRE DEL ARCHIVO: " << argv[i+1] <<endl;
-        exploreHeaders(argv[i+1]);
-        break;
-        }
-    }*/
+int main(int argc, char **argv){
 
     DatosProductos *base_de_datos[400];
     ArbolBinario<DatosProductos*> arbol;
@@ -310,7 +311,58 @@ int main() { //(int argc, char **argv)
     arbolPorDeposito(base_de_datos, ubicProducto, porDeposito, cantDep);
 
 
-    while (opc != "salir") {
+   // cout<< "cantidad de argumentos: "<<argc<<endl;
+    for (int i=0; i<argc; i++){
+       // cout<< "ARGUMENTO "<< i << ": "<<argv[i]<<endl;
+        if (strcmp(argv[i], "-tot_art_dif")==0){
+            cout << "El total de articulos diferentes es: ";
+            cout << ubicProducto << endl;
+            cout << endl << "" << endl;
+            break;
+        }
+        if (strcmp(argv[i], "-total_art")==0){
+            cout << "La cantidad total de articulos es: ";
+            cout << stockGeneral << endl;
+            cout << endl << "" << endl;
+            break;
+        }
+        if (strcmp(argv[i], "-min_stock")==0){ //hacer try catch que lea si hay argumentos despues y cuantos y en base a eso decida que hacer (verlo en el proy de juan)
+            cout << "ingrese la cantidad de stock a analizar menor o igual: ";
+            cin >> n;
+            cout << "El listado de articulos con cantidad menor o igual a " << n << " de stock es: " << endl;
+            cout << endl;
+            minStock(arbol, base_de_datos, n, ubicProducto);
+            cout << endl << "" << endl;
+            break;
+        }
+        if (strcmp(argv[i], "-min_stock_deposito")==0){
+            stockMinPorDep(porDeposito);
+            cout << endl << "" << endl;
+            break;
+        }
+        if (strcmp(argv[i], "-stock")==0){
+            stock(base_de_datos, ubicProducto);
+            cout << endl << "" << endl;
+            break;
+        }
+        if (strcmp(argv[i], "-stock_deposito")==0){
+            cout << "ingrese el deposito que quiere ver: ";
+            cin >> deposito;
+            stockDeArtEnDep(base_de_datos, ubicProducto, deposito);
+            cout << endl << "" << endl;
+            break;
+        }
+        if (strcmp(argv[i], "-max_stock")==0){
+            cout << "ingrese la cantidad de stock a analizar mayor o igual: ";
+            cin >> n;
+            cout << "El listado de articulos con cantidad mayor o igual a " << n << " de stock es: " << endl;
+            maxStock(base_de_datos, arbol, n, ubicProducto);
+            cout << endl << "" << endl;
+            break;
+        }
+    }
+
+   /* while (opc != "salir") {
         cout << "INGRESE POR TECLADO LO QUE QUIERE REALIZAR" << endl;
         cout << "'total_art_dif' Cantidad total de articulos diferentes." << endl
              << "'total_art' Cantidad total de articulos" << endl
@@ -393,5 +445,5 @@ int main() { //(int argc, char **argv)
                 cout << endl << "" << endl;
                 break;
         }
-    }
+    }*/
 }
