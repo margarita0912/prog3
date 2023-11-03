@@ -78,7 +78,9 @@ void DatosProductos::probador() {
     cout << "CODIGO: " << codigo << endl;
     cout << "NOMBRE: " << nombre << endl;
     cout << "Stock total: " << stockTotal << endl;
-    cout << "DEPOSITO 1: " << depositos[0] << endl;
-
-
+    cout << "Deposito 1: " << depositos[0] << endl;
+    cout << "Deposito 2: " << depositos[1] << endl;
+    cout << "Deposito 3: " << depositos[2] << endl;
+    cout << "Deposito 4: " << depositos[3] << endl;
+    cout << "Deposito 5: " << depositos[4] << endl;
 }
