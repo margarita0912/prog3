@@ -17,7 +17,9 @@ private:
     void inorder (NodoArbol<T> *r);
     void postorder (NodoArbol<T> *r);
     void print(NodoArbol<T> *node, string indent);
-    void buscarProductosStockMenor(NodoArbol<T> *r, int n);
+    void buscarProductosStockMenor(NodoArbol<T> *r, int n, bool &coincide, int dep);
+    void minStock (NodoArbol<T> *r, int n, bool &coincide);
+    void maxStock(NodoArbol<T> *r, int n, bool &coincide);
 
 public:
     ArbolBinario();
@@ -42,7 +44,11 @@ public:
 
     void encontrado(bool, int);
 
-    void buscarProductosStockMenor(int);
+    void buscarProductosStockMenor(int, bool&, int);
+
+    void minStock(int, bool& );
+
+    void maxStock(int, bool&);
 
 
 };
@@ -248,22 +254,70 @@ void ArbolBinario<T>::print(NodoArbol<T> *node, string indent) {
         root->print(false, "");
 }
 
-template <class T> void ArbolBinario<T>::buscarProductosStockMenor(int n) {
-    buscarProductosStockMenor(root, n);
+template <class T> void ArbolBinario<T>::buscarProductosStockMenor(int n, bool &coincide, int dep) { //esta se usa para la lista de arboles
+    buscarProductosStockMenor(root, n, coincide, dep);
 }
 
-template <class T> void ArbolBinario<T>::buscarProductosStockMenor(NodoArbol<T> *r, int n) {
+template <class T> void ArbolBinario<T>::buscarProductosStockMenor(NodoArbol<T> *r, int n, bool &coincide, int dep) { //su recursividad
     if (r == nullptr) {
         return;
     }
 
-    if (r->getData()->getstockTotal() < n) {
-        cout << "Producto con stock menor que " << n << ": " << r->getData()->getcodigo() << endl;
+    if (r->getData()->getdepositos()[dep] <= n) {
+        r->getData()->probador();
+        cout << "-----------------------------------------------------" << endl;
+        coincide=true;
     }
 
-    buscarProductosStockMenor(r->getLeft(), n);
-    buscarProductosStockMenor(r->getRight(), n);
+    buscarProductosStockMenor(r->getLeft(), n, coincide, dep);
+    buscarProductosStockMenor(r->getRight(), n, coincide, dep);
 }
+
+template <class T> void ArbolBinario<T>::minStock(int n, bool &coincide) {
+minStock(root, n, coincide);
+}
+
+template <class T> void ArbolBinario<T>::minStock(NodoArbol<T> *r, int n, bool &coincide) {
+if (r== nullptr){
+    return;
+}
+
+    int stock = r->getData()->getstockTotal();
+
+    if (stock <= n) {
+        r->getData()->probador();
+        cout << "-----------------------------------------------------" << endl;
+        coincide = true; // Establecer la bandera en true si se encuentra un producto
+    }
+
+    // Buscar de forma recursiva en los subárboles izquierdo y derecho
+    minStock(r->getLeft(), n, coincide);
+    minStock(r->getRight(), n, coincide);
+}
+
+
+template <class T> void ArbolBinario<T>::maxStock(int n, bool &coincide) {
+    maxStock(root, n, coincide);
+}
+
+template <class T> void ArbolBinario<T>::maxStock(NodoArbol<T> *r, int n, bool &coincide) {
+    if (r== nullptr){
+        return;
+    }
+
+    int stock = r->getData()->getstockTotal();
+
+    if (stock >= n) {
+        r->getData()->probador();
+        cout << "-----------------------------------------------------" << endl;
+        coincide = true; // Establecer la bandera en true si se encuentra un producto
+    }
+
+
+    maxStock(r->getLeft(), n, coincide);
+    maxStock(r->getRight(), n, coincide);
+}
+
 
 
 
