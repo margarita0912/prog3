@@ -65,8 +65,8 @@ void leerArchivo(DatosProductos* base_de_datos[400], int &ubicProducto, int &sto
         while (getline(s, dato, ',')) {
            if (dato.front() == '"' && dato.back() == '"') {
                 dato = dato.substr(1, dato.length() - 2);
-            }
-            switch (cont) {
+           }
+           switch (cont) {
                 case 0: {
 
                     if(dato.empty()){
@@ -112,8 +112,8 @@ void leerArchivo(DatosProductos* base_de_datos[400], int &ubicProducto, int &sto
                     stockGeneral=stockGeneral+total;
                     break;
                 }
-            }
-            cont++;
+           }
+           cont++;
         }
         s.clear();
         ubicProducto++;      //en este while me voy elevando a uno en la ubic del cliente
@@ -124,10 +124,21 @@ void leerArchivo(DatosProductos* base_de_datos[400], int &ubicProducto, int &sto
 
 
 void crearArbol(DatosProductos* base_de_datos[400], ArbolBinario<DatosProductos*> &arbol, int ubicProducto){//modificar para elegir un pivote adecuado
+    int medio = ubicProducto / 2;
+    int cuarto_izquierda = ubicProducto / 4;
+    int cuarto_derecha = 3 * ubicProducto / 4;
+
+    arbol.put(base_de_datos[medio]);
+    arbol.put(base_de_datos[cuarto_izquierda]);
+    arbol.put(base_de_datos[cuarto_derecha]);
+
     for(int i=1; i<ubicProducto+1; i++){
-        arbol.put(base_de_datos[i]);
+        if (i!=medio && i!=cuarto_derecha && i!=cuarto_izquierda){
+            arbol.put(base_de_datos[i]);
+        }
+
     }
-    // arbol.print();
+
 }
 
 void arbolPorDeposito(DatosProductos* base_de_datos[400], int ubicProducto, Lista<ArbolBinario<DatosProductos*>>& porDeposito, int cantDepositos) {
@@ -141,11 +152,8 @@ void arbolPorDeposito(DatosProductos* base_de_datos[400], int ubicProducto, List
 }
 
 void minStock(ArbolBinario<DatosProductos*> &arbol, int n){
-
     bool band=false;
-
     arbol.minStock(n,band);
-
     if(!band){
         cout << "No hay productos con su stock por debajo del valor ingresado" << endl;
     }
