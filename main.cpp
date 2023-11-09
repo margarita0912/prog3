@@ -9,6 +9,7 @@
 #include <sstream>
 #include <limits>
 #include <cstring>
+#include <ctime>
 #include "Lista.h"
 #include <vector>
 using namespace std;
@@ -192,6 +193,12 @@ void stockDeArtEnDep(DatosProductos* base_de_datos[400], int ubicProducto, int d
 
 int main(int argc, char **argv){
 
+    clock_t begin;
+
+    cout << "Comenzando a medir Tiempo\n" << endl;
+
+    begin = clock();
+
     DatosProductos *base_de_datos[400];
     ArbolBinario<DatosProductos*> arbol;
     Lista<ArbolBinario<DatosProductos*>>porDeposito;
@@ -302,4 +309,10 @@ int main(int argc, char **argv){
             break;
         }
     }
+
+    clock_t end = clock();
+
+    double elapsed_secs = static_cast<double>(end - begin) / CLOCKS_PER_SEC;
+
+    cout << "Tardo elapsed_secs " << elapsed_secs << "\n" << std::endl;
 }
